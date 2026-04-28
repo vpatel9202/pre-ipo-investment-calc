@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commonwealth Fusion Systems — A Family Investment Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B0E14;
+  --bg-elevated: #131822;
+  --ink: #E8E4DC;
+  --ink-muted: #968F84;
+  --ink-faint: #5C5750;
+  --copper: #D4A574;
+  --copper-deep: #A67F4F;
+  --bull: #7FA670;
+  --bear: #B85450;
+  --neutral: #6B7B95;
+  --rule: rgba(232, 228, 220, 0.08);
+  --rule-strong: rgba(232, 228, 220, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Background atmosphere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212, 165, 116, 0.04), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 90%, rgba(107, 123, 149, 0.03), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ─────────────────────────────── */
+.deck {
+  position: relative;
+  z-index: 1;
+}
+
+.slide {
+  min-height: 100vh;
+  padding: 5rem 6rem 7rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .slide { padding: 3rem 1.5rem 5rem; }
+}
+
+.slide-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.slide-num span:last-child { color: var(--copper-deep); }
+
+/* ── Typography ─────────────────────────────── */
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  color: var(--ink);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+  font-weight: 300;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 350;
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+  font-variation-settings: "opsz" 24;
+}
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.lede {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 64ch;
+  font-variation-settings: "opsz" 60;
+}
+
+p {
+  max-width: 68ch;
+  margin-bottom: 1rem;
+  color: var(--ink);
+}
+
+.muted { color: var(--ink-muted); }
+.faint { color: var(--ink-faint); }
+.copper { color: var(--copper); }
+.bull-text { color: var(--bull); }
+.bear-text { color: var(--bear); }
+
+strong { font-weight: 600; color: var(--ink); }
+em { font-style: italic; color: var(--copper); }
+
+a { color: var(--copper); text-decoration: underline; text-decoration-color: var(--copper-deep); text-underline-offset: 3px; }
+
+/* numerical text */
+.num { font-family: 'IBM Plex Mono', monospace; font-feature-settings: "tnum"; }
+
+/* ── Components ─────────────────────────────── */
+hr.rule {
+  border: 0;
+  border-top: 1px solid var(--rule-strong);
+  margin: 2.5rem 0;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; gap: 2rem; } }
+
+.split-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+@media (max-width: 900px) { .split-3 { grid-template-columns: 1fr; } }
+
+.box {
+  border: 1px solid var(--rule-strong);
+  padding: 1.75rem;
+  background: var(--bg-elevated);
+  border-radius: 2px;
+}
+
+.box-bull { border-left: 3px solid var(--bull); }
+.box-bear { border-left: 3px solid var(--bear); }
+.box-copper { border-left: 3px solid var(--copper); }
+
+.kv {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.95rem;
+}
+.kv:last-child { border: 0; }
+.kv-label { color: var(--ink-muted); }
+.kv-value { font-family: 'IBM Plex Mono', monospace; color: var(--ink); }
+
+.tag {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  margin-right: 0.4rem;
+  color: var(--ink-muted);
+}
+
+.tag-bull { color: var(--bull); border-color: rgba(127, 166, 112, 0.3); }
+.tag-bear { color: var(--bear); border-color: rgba(184, 84, 80, 0.3); }
+.tag-copper { color: var(--copper); border-color: rgba(212, 165, 116, 0.3); }
+
+ul.clean {
+  list-style: none;
+  padding: 0;
+}
+
+ul.clean li {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+ul.clean li:last-child { border: 0; }
+ul.clean li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--copper);
+}
+
+ul.clean.tight li {
+  padding: 0.3rem 0 0.3rem 1.2rem;
+  border: 0;
+}
+
+/* citation marks */
+sup {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--copper);
+  margin-left: 2px;
+}
+
+/* ── Title slide ─────────────────────────────── */
+.slide-title {
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(212, 165, 116, 0.06), transparent 60%),
+    var(--bg);
+}
+
+.slide-title h1 {
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-weight: 200;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  letter-spacing: -0.025em;
+}
+
+.slide-title .display-italic {
+  font-style: italic;
+  color: var(--copper);
+  font-weight: 300;
+}
+
+.slide-title-meta {
+  margin-top: 4rem;
+  display: flex;
+  gap: 4rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.slide-title-meta div span { display: block; color: var(--copper); margin-bottom: 4px; font-size: 0.7rem; }
+
+/* ── Timeline ─────────────────────────────── */
+.timeline {
+  margin-top: 2rem;
+  position: relative;
+  padding-left: 2rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-strong);
+}
+.timeline-item {
+  position: relative;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 1.4rem;
+  width: 8px;
+  height: 8px;
+  background: var(--copper);
+  border-radius: 50%;
+  transform: translateX(-3px);
+}
+.timeline-item.future::before { background: transparent; border: 1px solid var(--ink-faint); }
+.timeline-item.past::before { background: var(--bull); }
+
+.timeline-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--copper);
+  letter-spacing: 0.1em;
+}
+.timeline-title { font-weight: 500; margin-top: 4px; }
+.timeline-desc { color: var(--ink-muted); font-size: 0.9rem; margin-top: 2px; }
+
+/* ── Comparison Table ─────────────────────────────── */
+table.comp {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+table.comp th, table.comp td {
+  text-align: left;
+  padding: 0.85rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+table.comp th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 500;
+  border-bottom-color: var(--rule-strong);
+}
+table.comp .num-cell { font-family: 'IBM Plex Mono', monospace; }
+table.comp tr.highlight { background: rgba(212, 165, 116, 0.04); }
+table.comp tr.highlight td:first-child { color: var(--copper); font-weight: 500; }
+
+/* ── Calculator ─────────────────────────────── */
+.calc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+@media (max-width: 1100px) { .calc { grid-template-columns: 1fr; gap: 2rem; } }
+
+.calc-section {
+  border: 1px solid var(--rule-strong);
+  padding: 1.5rem;
+  background: var(--bg-elevated);
+}
+
+.calc-section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.input-row {
+  margin-bottom: 1.5rem;
+}
+.input-row:last-child { margin-bottom: 0; }
+
+.input-row label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+}
+
+.input-row .input-value {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--copper);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.input-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--rule-strong);
+  outline: none;
+  border-radius: 2px;
+}
+.input-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--copper);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--bg-elevated);
+}
+.input-row input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--copper);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--bg-elevated);
+}
+
+.input-row input[type="number"] {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  padding: 0.5rem 0.75rem;
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem;
+  border-radius: 2px;
+}
+.input-row input[type="number"]:focus {
+  outline: none;
+  border-color: var(--copper);
+}
+
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink-muted);
+  padding: 0.6rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+.toggle-btn.active {
+  border-color: var(--copper);
+  color: var(--copper);
+  background: rgba(212, 165, 116, 0.07);
+}
+
+.output-big {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-variation-settings: "opsz" 144;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  color: var(--copper);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.output-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.output-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.output-row .output-block {
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+.output-block .output-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.output-block .output-num.green { color: var(--bull); }
+.output-block .output-num.red { color: var(--bear); }
+
+.output-block-label {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+/* Scenario table */
+.scenario-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+.scenario-table th, .scenario-table td {
+  padding: 0.6rem 0.4rem;
+  text-align: right;
+  border-bottom: 1px solid var(--rule);
+}
+.scenario-table th:first-child, .scenario-table td:first-child { text-align: left; }
+.scenario-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.scenario-table input[type="number"] {
+  width: 50px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  padding: 2px 4px;
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  text-align: right;
+  border-radius: 2px;
+}
+.scenario-table input[type="number"]:focus { outline: none; border-color: var(--copper); }
+.scenario-table .num-cell { font-family: 'IBM Plex Mono', monospace; }
+
+.ev-summary {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(212, 165, 116, 0.06);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ev-summary .ev-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--copper);
+  letter-spacing: -0.02em;
+}
+
+/* ── Slide nav ─────────────────────────────── */
+.nav-fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1.25rem 1.5rem;
+  z-index: 100;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+
+.nav-fixed .live { color: var(--copper); }
+
+.dots {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 100;
+}
+.dot {
+  width: 5px;
+  height: 5px;
+  background: var(--ink-faint);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 0;
+}
+.dot.active { background: var(--copper); transform: scale(1.6); }
+.dot:hover { background: var(--ink-muted); }
+
+@media (max-width: 900px) { .dots { display: none; } }
+
+/* footer / sources */
+.sources {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.6;
+}
+
+.sources strong { color: var(--ink-muted); font-weight: 500; }
+
+/* utilities */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mt-5 { margin-top: 3rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+.center { text-align: center; }
+
+/* print-friendly */
+@media print {
+  body { background: white; color: black; }
+  .nav-fixed, .dots { display: none; }
+  .slide { min-height: auto; padding: 2rem; page-break-after: always; }
+  body::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav-fixed">CFS / FAMILY MEMO / <span class="live" id="live-counter">01</span></div>
+<nav class="dots" id="dots"></nav>
+
+<div class="deck">
+
+<!-- ─────────────────────────── Slide 1: Title -->
+<section class="slide slide-title" id="s1">
+  <div class="slide-num">
+    <span>0.0 — COVER</span>
+    <span>INVESTOR A × INVESTOR B</span>
+  </div>
+
+  <span class="eyebrow">Pre-decision research memo</span>
+  <h1>Commonwealth<br>Fusion Systems<br><span class="display-italic">— a two-party<br>investment analysis.</span></h1>
+
+  <div class="slide-title-meta">
+    <div><span>Subject</span>$25K (Investor A) + $25–100K (Investor B)<br>via SPV on CFS cap table</div>
+    <div><span>Compiled</span>April 2026</div>
+    <div><span>Standard</span>Argues both sides hard.<br>Not investment advice.</div>
+  </div>
+
+  <p class="muted mt-5" style="font-size: 0.85rem; max-width: 60ch;">
+    This deck synthesizes a multi-LLM analysis with current public data through April 2026, then structures the decision around two distinct skepticisms — Investor A on the science, Investor B on the competitive landscape. Slide 13 contains an interactive return calculator.
+  </p>
+</section>
+
+<!-- ─────────────────────────── Slide 2: The Decision -->
+<section class="slide" id="s2">
+  <div class="slide-num"><span>02 / 15</span><span>THE DECISION</span></div>
+  <span class="eyebrow">What is actually being decided</span>
+  <h2>The decision in one paragraph.</h2>
+  <p class="lede">
+    A fund already on the CFS cap table is offering SPV access. Two investors are weighing $25K (Investor A) and $25–100K (Investor B) into pre-IPO equity in the most credible private fusion company, held for 5–10 years, with no liquidity in the interim. The fund's fee structure is one of two patterns: <strong class="copper">5% carry on profits</strong>, or <strong class="copper">20% upfront with no carry</strong>. The structure changes the math materially. The underlying does not.
+  </p>
+
+  <hr class="rule">
+
+  <div class="split-3">
+    <div>
+      <span class="tag tag-copper">Position</span>
+      <h3 class="mt-2">Small, asymmetric</h3>
+      <p class="muted">For high-income dual-earner households, $25–100K per side is 1–4% of household NW. This is not portfolio-defining capital. It is an expression of a thesis.</p>
+    </div>
+    <div>
+      <span class="tag tag-copper">Thesis</span>
+      <h3 class="mt-2">Monetary debasement + AI energy demand</h3>
+      <p class="muted">CFS sits at the intersection of two macro drivers many investors are already indexing against — fiat dilution (deep-tech infrastructure) and the AI compute power wall (firm clean baseload).</p>
+    </div>
+    <div>
+      <span class="tag tag-copper">Constraint</span>
+      <h3 class="mt-2">Information-poor entry</h3>
+      <p class="muted">Unlike named B2 investors, secondary buyers receive no follow-on rights, no information rights, no voting. That gap must be priced.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h3 class="copper">What this deck does not do</h3>
+  <ul class="clean tight mt-2">
+    <li>It does not pitch. It argues both sides at full strength.</li>
+    <li>It does not assume Investor B defers to Investor A. They are deciding independently.</li>
+    <li>It does not treat the fund's terms as accepted. <span class="muted">Slide 12 itemizes what is still needed from the fund before committing.</span></li>
+  </ul>
+</section>
+
+<!-- ─────────────────────────── Slide 3: Fusion in 90 seconds -->
+<section class="slide" id="s3">
+  <div class="slide-num"><span>03 / 15</span><span>PRIMER</span></div>
+  <span class="eyebrow">For physicians, not physicists</span>
+  <h2>Fusion in 90 seconds.</h2>
+
+  <div class="split">
+    <div>
+      <p class="lede">Two hydrogen atoms slammed together fuse into helium. The new helium atom weighs slightly less than the sum of its parts. The missing mass becomes energy. <span class="copper">This is what powers the sun.</span></p>
+
+      <p class="mt-3 muted">To do it on Earth, you need to:</p>
+      <ul class="clean">
+        <li>Heat hydrogen to ~150 million °C — ten times hotter than the sun's core.</li>
+        <li>Hold that hot, charged gas (plasma) in place long enough to fuse, without it touching anything physical.</li>
+        <li>Capture the energy released — fast neutrons heating a blanket, blanket heating water, water turning a turbine. The back end is conventional power-plant engineering.</li>
+      </ul>
+
+      <p class="mt-4">The hard part is the middle. A plasma at 150M°C will instantly destroy any material vessel. So you contain it without touching it — using <strong class="copper">magnetic fields strong enough to suspend the plasma</strong> in a vacuum chamber. The shape of the chamber and field geometry defines the fusion approach: tokamak (donut), stellarator (twisted donut), Z-pinch (column), inertial (laser implosion), and others.</p>
+    </div>
+
+    <div class="box box-copper">
+      <span class="eyebrow">The unsolved threshold</span>
+      <h3>"Q greater than 1"</h3>
+      <p class="muted">Q is the ratio of fusion energy out to heating energy in. Q&gt;1 means the plasma is producing more than it consumes. Q&gt;10 is roughly what a power plant needs.</p>
+
+      <hr class="rule">
+
+      <p class="muted">In December 2022, the National Ignition Facility's laser approach briefly crossed Q&gt;1 in a single shot, lasting nanoseconds. <strong class="copper">No machine has ever produced sustained, commercially relevant net energy.</strong> CFS's SPARC is one of three projects worldwide attempting this in the next 24 months.</p>
+
+      <hr class="rule">
+
+      <p class="muted faint" style="font-size: 0.8rem;">The fusion product (n·T·τ) — density × temperature × confinement time — is the single number that captures the problem. Every fusion company is just a different bet on which combination is achievable in a buildable machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 4: What CFS bets on -->
+<section class="slide" id="s4">
+  <div class="slide-num"><span>04 / 15</span><span>THE THESIS</span></div>
+  <span class="eyebrow">CFS's specific bet</span>
+  <h2>Better magnets, smaller machine.</h2>
+
+  <p class="lede">
+    Fusion power density scales as <strong class="copper">B⁴</strong> — the fourth power of the magnetic field strength. Doubling the field gives sixteen times the fusion power per unit volume. <em>This is the entire CFS thesis.</em>
+  </p>
+
+  <div class="split mt-4">
+    <div>
+      <h3>The conventional path</h3>
+      <p class="muted">ITER, the international fusion mega-project under construction in France, uses low-temperature superconducting magnets at ~12 Tesla. To produce useful fusion power at that field strength requires a machine the size of an apartment building, costing $40–60B, with first plasma now targeted for 2035.</p>
+
+      <p class="mt-3 muted">It is the most validated physics in fusion. It is also slow, expensive, and not commercial.</p>
+    </div>
+
+    <div>
+      <h3>The CFS path</h3>
+      <p class="muted">Use rare-earth barium copper oxide (REBCO) high-temperature superconductors, which sustain ~20 Tesla in a far smaller volume. Same physics; one-tenth the size. SPARC is roughly the size of a tennis court. ARC, the commercial successor, fits on a coal-plant footprint.</p>
+
+      <p class="mt-3 muted">In September 2021, CFS and MIT demonstrated a 20T REBCO magnet at scale.<sup>1</sup> The bet was technically validated. Everything since is engineering the rest of the machine around the magnet.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="box box-copper">
+    <h3>The translated stakes</h3>
+    <p>If the magnet thesis works at the system level, fusion power plants can be built in the cost and timeline envelope of conventional thermal power plants — not aerospace mega-projects. That is the difference between a curiosity and an industry. <strong class="copper">It is also the difference between a venture-scale return and a research grant.</strong></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 5: What's been proven -->
+<section class="slide" id="s5">
+  <div class="slide-num"><span>05 / 15</span><span>FOR INVESTOR A'S SCIENCE SKEPTICISM (1/2)</span></div>
+  <span class="eyebrow">Direct evidence as of April 2026</span>
+  <h2>What has actually been proven.</h2>
+
+  <p class="lede">The 2021 magnet demonstration is the only milestone the LLM council treated as solid. That was conservative. The list has grown.</p>
+
+  <div class="timeline mt-4">
+    <div class="timeline-item past">
+      <div class="timeline-date">SEPT 2021</div>
+      <div class="timeline-title">20 Tesla REBCO magnet demonstrated at scale</div>
+      <div class="timeline-desc">3-meter representative coil; jointly executed by MIT PSFC and CFS. The foundational result.<sup>1</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">DEC 2021</div>
+      <div class="timeline-title">Series B closes — $1.8B</div>
+      <div class="timeline-desc">Tiger Global, BEV, Eni, Bill Gates, Google, Temasek, Equinor.<sup>2</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">APR 2025</div>
+      <div class="timeline-title">SPARC cryostat installed; tokamak assembly begins</div>
+      <div class="timeline-desc">First major mechanical milestone of the demonstration machine itself.<sup>3</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">JUN 2025</div>
+      <div class="timeline-title">Google signs 200 MW PPA from ARC</div>
+      <div class="timeline-desc">First binding commercial offtake commitment; covers half of the planned 400 MW Virginia plant.<sup>4</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">AUG 2025</div>
+      <div class="timeline-title">Series B2 closes — $863M, oversubscribed</div>
+      <div class="timeline-desc">NVIDIA, Druckenmiller, Counterpoint Global, Bezos. Total raised: ~$3B. Largest deep-tech raise since their own 2021 round.<sup>5</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">SEPT 2025</div>
+      <div class="timeline-title">DOE independently validates TF magnet performance</div>
+      <div class="timeline-desc">Under the Milestone-Based Fusion Development Program; Energy Secretary Wright visits SPARC site.<sup>6</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">SEPT 2025</div>
+      <div class="timeline-title">Eni signs $1B+ PPA; ARC site zoned by Chesterfield County</div>
+      <div class="timeline-desc">Second binding offtake. Combined with Google: <strong>ARC-1's full 400 MW capacity is pre-sold.</strong><sup>7</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">OCT 2025</div>
+      <div class="timeline-title">Google DeepMind partnership for plasma control</div>
+      <div class="timeline-desc">Joint work using DeepMind's TORAX simulator + reinforcement-learning control. Already in CFS daily workflow.<sup>8</sup></div>
+    </div>
+    <div class="timeline-item past">
+      <div class="timeline-date">JAN 2026</div>
+      <div class="timeline-title">First production TF magnet completed; Stéphane Bancel joins board</div>
+      <div class="timeline-desc">First of 18 toroidal field magnets on the assembly jig. Bancel — Moderna CEO — signals the operationalization phase.<sup>9</sup></div>
+    </div>
+  </div>
+
+  <p class="muted mt-4" style="font-size: 0.9rem;">Pattern: nothing on this list speaks to whether plasma physics works at 12 Tesla in SPARC's geometry. Everything on this list speaks to whether CFS will <em>survive long enough to find out</em>. The science remains the science; the company has materially reduced its execution and capital risk.</p>
+</section>
+
+<!-- ─────────────────────────── Slide 6: What's still speculative -->
+<section class="slide" id="s6">
+  <div class="slide-num"><span>06 / 15</span><span>FOR INVESTOR A'S SCIENCE SKEPTICISM (2/2)</span></div>
+  <span class="eyebrow">Honest accounting of what isn't known</span>
+  <h2>What is still speculative.</h2>
+
+  <p class="lede">
+    The science risks separate cleanly into <strong class="copper">SPARC risks</strong> (resolved or not by 2027) and <strong class="copper">ARC risks</strong> (resolved or not by 2032+). The first set is real but bounded. The second set is structurally harder.
+  </p>
+
+  <div class="split mt-4">
+    <div class="box box-bear">
+      <h3 class="bear-text">Near-term — SPARC risks</h3>
+      <p class="muted mt-2"><strong>1. Confinement scaling at 12 T is extrapolated, not measured.</strong> H-mode access threshold and energy confinement time at this field have never been observed at scale. Surprises in confinement scaling have, historically, been unfavorable. A 30% miss on heating power requirements is plausible.</p>
+
+      <p class="muted mt-3"><strong>2. Disruption physics at high field.</strong> A sudden plasma disruption can quench the magnets. REBCO quench propagation is slower and less forgiving than ITER-class low-temperature superconductors. A magnet damage event would mean a 6–12 month repair and a narrative break.</p>
+
+      <p class="muted mt-3"><strong>3. Tritium runtime.</strong> Global civilian tritium supply is ~25 kg, mostly Canadian CANDU reactors.<sup>10</sup> SPARC will run weeks of D-T operation per year, slowing the empirical learning loop. This is a logistical, not physical, ceiling.</p>
+    </div>
+
+    <div class="box box-bear">
+      <h3 class="bear-text">Long-term — ARC risks</h3>
+      <p class="muted mt-2"><strong>1. Tritium breeding ratio (TBR).</strong> ARC needs to breed more tritium than it consumes (TBR &gt; 1.05) using a liquid FLiBe blanket surrounding the plasma. <em>No fusion blanket has ever operated anywhere.</em> Published designs cluster uncomfortably close to 1.0. If ARC's geometry comes back at TBR 0.95, the plant cannot operate as a power plant — only as a tritium consumer.</p>
+
+      <p class="muted mt-3"><strong>2. Neutron damage to first wall and divertor.</strong> ARC's compactness means more fusion power per unit of wall area. Multi-MW-yr/m² neutron fluence has never been survived by any material. The economic gating problem.</p>
+
+      <p class="muted mt-3"><strong>3. Tritium startup inventory.</strong> Each ARC startup requires ~10 kg of tritium.<sup>10</sup> Global supply is decaying as CANDUs retire. By the time ARC-2 needs tritium, the supply may not exist outside breeding-from-ARC-1, which itself has not been validated.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="box box-copper">
+    <h3>The honest framing</h3>
+    <p>SPARC will likely produce some plasma in 2026–2027. Whether it produces <strong>Q&gt;1 at the predicted heating power, with predicted confinement, without disruption damage</strong> — that is the live question. ARC's TBR and first-wall problems are real and have no demonstration article between SPARC and a commercial plant. <strong class="copper">A reasonable Bayesian sees probability of commercial fusion-electricity by 2045 at maybe 35–50%. Higher than the LLM council's "well below 50%"; lower than the pitch's "imminent."</strong></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 7: Roadmap -->
+<section class="slide" id="s7">
+  <div class="slide-num"><span>07 / 15</span><span>ROADMAP</span></div>
+  <span class="eyebrow">SPARC → ARC → revenue</span>
+  <h2>The path to electrons on the grid.</h2>
+
+  <p class="lede">CFS's published roadmap has slipped once already — original SPARC target was 2025; current target is end-2026. <strong class="copper">A 12–18 month slip is already in the price.</strong> The relevant question is whether the next slip is small (months) or structural (ARC redesign).</p>
+
+  <div class="timeline mt-4">
+    <div class="timeline-item future">
+      <div class="timeline-date">END 2026</div>
+      <div class="timeline-title">SPARC plasma operations begin</div>
+      <div class="timeline-desc">Initial commissioning in hydrogen and deuterium plasmas. Per DOE-published SPARC research plan.<sup>11</sup></div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">2027</div>
+      <div class="timeline-title">Q&gt;1 target — net energy from D-T</div>
+      <div class="timeline-desc">Campaign #1 focuses specifically on this milestone. If achieved, this is the largest narrative inflection point CFS will ever have.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">2028–2029</div>
+      <div class="timeline-title">H-mode access; Q&gt;10 campaigns</div>
+      <div class="timeline-desc">6-month plasma campaigns separated by 4-month maintenance periods. Multiple shots at validating predicted physics.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">~2030</div>
+      <div class="timeline-title">ARC engineering design lock</div>
+      <div class="timeline-desc">If SPARC has hit its targets, ARC moves from design to construction. If TBR or wall-loading models show problems, ARC-0 (intermediate non-power machine) becomes likely.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">EARLY 2030s</div>
+      <div class="timeline-title">ARC-1 first power to grid — Chesterfield County, VA</div>
+      <div class="timeline-desc">400 MW. Site zoned. Google + Eni offtake covers full capacity. Built on Dominion Energy land near retiring coal plant for interconnect advantage.<sup>7</sup></div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">2030–2032</div>
+      <div class="timeline-title">Plausible IPO window</div>
+      <div class="timeline-desc">Pre-revenue listing timed to a major SPARC milestone. This is the realistic liquidity event for a 2026 secondary buyer.</div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <p class="muted">CEO Bob Mumgaard, post-Series B2: <em>"It definitely puts it in a category where now we can start to work more and more on ARC while we finish SPARC, instead of doing them very sequentially."</em><sup>12</sup> The architecture is no longer waterfall.</p>
+</section>
+
+<!-- ─────────────────────────── Slide 8: Competitive landscape -->
+<section class="slide" id="s8">
+  <div class="slide-num"><span>08 / 15</span><span>FOR INVESTOR B'S COMPETITIVE SKEPTICISM (1/2)</span></div>
+  <span class="eyebrow">The race</span>
+  <h2>Who else is in this.</h2>
+
+  <p class="lede">~53 fusion companies globally, per the Fusion Industry Association.<sup>13</sup> The serious money is concentrated in seven. CFS is one. Here is the honest competitive picture.</p>
+
+  <table class="comp">
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Approach</th>
+        <th>Funding</th>
+        <th>Status (Apr 2026)</th>
+        <th>Earliest grid</th>
+        <th>Primary risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td><strong>CFS</strong></td>
+        <td>HTS tokamak (D-T)</td>
+        <td class="num-cell">~$3.0B</td>
+        <td>SPARC under construction; Q&gt;1 in 2027</td>
+        <td>Early 2030s</td>
+        <td>TBR, wall loading at ARC scale</td>
+      </tr>
+      <tr>
+        <td><strong>Helion</strong></td>
+        <td>Pulsed FRC, D-He³, direct-electric</td>
+        <td class="num-cell">~$1.0B+</td>
+        <td>Polaris running; net electricity not yet shown.<sup>14</sup> 150M °C achieved Feb 2026</td>
+        <td>2028 (claimed); 2032+ realistic</td>
+        <td>Gain physics contested; integrated chain unproven</td>
+      </tr>
+      <tr>
+        <td><strong>TAE</strong></td>
+        <td>Beam-driven FRC, p-B11 (aneutronic)</td>
+        <td class="num-cell">~$1.3B</td>
+        <td>Stable 70M °C plasma in 2025; Da Vinci targeting early 2030s<sup>15</sup></td>
+        <td>2035+</td>
+        <td>p-B11 fuel cycle physics may be unachievable</td>
+      </tr>
+      <tr>
+        <td><strong>Tokamak Energy</strong></td>
+        <td>HTS spherical tokamak (same physics family)</td>
+        <td class="num-cell">~$300M</td>
+        <td>ST40 hit 1 MA plasma current Dec 2025; ST80-HTS targeting 2026<sup>16</sup></td>
+        <td>Early 2030s (claimed)</td>
+        <td>Capital-constrained; central column shielding</td>
+      </tr>
+      <tr>
+        <td><strong>Pacific Fusion</strong></td>
+        <td>Magneto-inertial, pulsed</td>
+        <td class="num-cell">~$900M</td>
+        <td>$1B NM facility announced Sept 2025; targeting net-positive by 2030</td>
+        <td>2032+</td>
+        <td>Pulse repetition rate; capital intensity</td>
+      </tr>
+      <tr>
+        <td><strong>Zap Energy</strong></td>
+        <td>Sheared-flow Z-pinch (no magnets)</td>
+        <td class="num-cell">~$330M</td>
+        <td>Century platform — 3-hr stable plasma in liquid metal Nov 2025</td>
+        <td>2035+</td>
+        <td>Z-pinch scaling at gain has historically disappointed</td>
+      </tr>
+      <tr>
+        <td><strong>General Fusion</strong></td>
+        <td>Magnetized target, mechanical</td>
+        <td class="num-cell">~$440M</td>
+        <td><strong class="bear-text">In distress.</strong> Emergency $30M raise Aug 2025; staff cuts; SPAC contemplation</td>
+        <td>2040+ (if at all)</td>
+        <td>Survival, not technical</td>
+      </tr>
+      <tr>
+        <td><strong>ITER</strong> (gov)</td>
+        <td>Conventional tokamak, D-T</td>
+        <td class="num-cell">~$25B+</td>
+        <td>First plasma 2035, full D-T 2040+. Will never sell electricity</td>
+        <td>Never (research only)</td>
+        <td>Not a commercial product; benchmark</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="muted mt-3" style="font-size: 0.85rem;">Excluded for brevity: ~45 smaller companies including SHINE, Proxima Fusion (German stellarator), Xcimer, Avalanche, NEO Fusion (China), and China Fusion Energy Co. The latter two are now $1B+ unicorns; China is reportedly ahead of the US on a state-led timeline.<sup>17</sup></p>
+</section>
+
+<!-- ─────────────────────────── Slide 9: Why CFS likely wins -->
+<section class="slide" id="s9">
+  <div class="slide-num"><span>09 / 15</span><span>FOR INVESTOR B'S COMPETITIVE SKEPTICISM (2/2)</span></div>
+  <span class="eyebrow">Five reasons CFS dominates the survival distribution</span>
+  <h2>Why this company, not the others.</h2>
+
+  <div class="split-3 mt-3">
+    <div class="box">
+      <span class="tag tag-copper">01 — Capital</span>
+      <h3 class="mt-2">~$3B raised</h3>
+      <p class="muted">Roughly one-third of all private fusion capital ever deployed. The closest competitor (TAE) is at $1.3B with a harder physics problem. Capital concentration in CFS is increasing, not decreasing.</p>
+    </div>
+
+    <div class="box">
+      <span class="tag tag-copper">02 — Physics conservatism</span>
+      <h3 class="mt-2">Tokamak orthodoxy</h3>
+      <p class="muted">CFS is doing the most validated approach (tokamak) with one well-defined improvement (better magnets). Helion, TAE, Zap, Pacific Fusion all carry physics risk CFS does not. The tradeoff is asymmetry: their upside is larger, their probability of physics success is materially lower.</p>
+    </div>
+
+    <div class="box">
+      <span class="tag tag-copper">03 — Customers</span>
+      <h3 class="mt-2">Plant pre-sold</h3>
+      <p class="muted">Google 200 MW + Eni $1B+ = full 400 MW of ARC-1 under offtake. <strong class="copper">No competitor has a commercially-equivalent commitment.</strong> Helion's Microsoft deal is for a different reactor (Orion) on a more aggressive timeline.</p>
+    </div>
+
+    <div class="box">
+      <span class="tag tag-copper">04 — Governance signals</span>
+      <h3 class="mt-2">DOE, Bancel, DeepMind</h3>
+      <p class="muted">Independent DOE validation of magnet performance (Sept 2025), Stéphane Bancel (Moderna) joining the board (Jan 2026), Google DeepMind embedded in operations. None of this is dispositive; collectively it is institutional ratification.</p>
+    </div>
+
+    <div class="box">
+      <span class="tag tag-copper">05 — Site infrastructure</span>
+      <h3 class="mt-2">Virginia siting locked</h3>
+      <p class="muted">Chesterfield County zoning approved Sept 2025. Site sits on Dominion Energy land beside a retiring coal plant — meaning <em>existing transmission interconnect</em>. No competitor has cleared comparable siting friction.</p>
+    </div>
+
+    <div class="box">
+      <span class="tag tag-copper">06 — Geographic optionality</span>
+      <h3 class="mt-2">Japan in play</h3>
+      <p class="muted">Talks with a 12-firm Japanese consortium led by Mitsui and Mitsubishi for a reactor in late 2030s/early 2040s. The TAM is global, not just Virginia.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="box box-copper">
+    <h3>The honest counter</h3>
+    <p>None of this guarantees commercial success. <strong>It guarantees CFS survives long enough to find out.</strong> The relevant comparison is not "is CFS the best fusion company" — it's "if exactly one private fusion company reaches commercial revenue this decade, which one." On that question the evidence overwhelmingly favors CFS. <span class="muted">If the right answer is "none of them," CFS's lead doesn't help — but no fusion bet helps in that scenario.</span></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 10: Commercial side -->
+<section class="slide" id="s10">
+  <div class="slide-num"><span>10 / 15</span><span>COMMERCIAL</span></div>
+  <span class="eyebrow">From physics demo to power-plant business</span>
+  <h2>The customer side has gotten real.</h2>
+
+  <p class="lede">Twelve months ago, fusion offtake was Microsoft's option deal with Helion plus a lot of optimism. Today, CFS specifically has converted its plant capacity into binding commercial commitments.</p>
+
+  <div class="split mt-4">
+    <div>
+      <h3 class="copper">ARC-1 — Chesterfield County, VA</h3>
+
+      <ul class="clean">
+        <li><strong>400 MW</strong> grid-scale fusion plant. CFS finances, builds, owns, operates.</li>
+        <li><strong>Google</strong> — 200 MW PPA signed June 2025; options on future plants. Google increased its equity stake concurrently.<sup>4</sup></li>
+        <li><strong>Eni</strong> — $1B+ PPA signed September 2025. Covers remaining capacity. Eni is also an investor.<sup>7</sup></li>
+        <li><strong>Site</strong> — James River Industrial Park. Owned by Dominion Energy. Adjacent to a retiring coal plant — existing grid interconnect.</li>
+        <li><strong>Zoning</strong> — final approval September 2025.</li>
+        <li><strong>Operational target</strong> — early 2030s, 20-year design life.</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="copper">The deeper signal</h3>
+      <p class="muted">Hyperscalers are not signing fusion PPAs because fusion will be cheap. <em>Fusion will not be cheap</em> at first power. First commercial electrons will plausibly be $150–300/MWh, vs. solar+storage at $50–100/MWh by 2035.</p>
+
+      <p class="muted mt-3">They are signing because data centers need <strong class="copper">firm, clean, 24/7 baseload</strong> in geographies and timeframes where renewables alone cannot deliver it. AI training clusters cannot intermittent-source. Fusion is one of three or four candidates (alongside SMR fission, enhanced geothermal, gas+CCS) for that load profile.</p>
+
+      <p class="muted mt-3">Translation: CFS is positioning into the AI infrastructure tailwind, not the bulk power market. <strong>The TAM is the firm-clean-baseload slot, not the global electricity market.</strong> That's a real industry, but it's smaller than the pitch implies.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h3>The Mumgaard tell</h3>
+  <p>Pre-2025, ARC was sequential after SPARC. Post-Google PPA, Mumgaard explicitly said the company can now "work more and more on ARC while we finish SPARC."<sup>12</sup> ARC-1 land, zoning, offtakes, and engineering are happening in parallel with SPARC commissioning. <span class="muted">If SPARC delivers Q&gt;1 in 2027–2028, the company is not starting ARC — it is mid-execution. That compresses time-to-revenue by 2–3 years versus the LLM council's pre-mortem assumption.</span></p>
+</section>
+
+<!-- ─────────────────────────── Slide 11: Bear case -->
+<section class="slide" id="s11">
+  <div class="slide-num"><span>11 / 15</span><span>BEAR CASE</span></div>
+  <span class="eyebrow">Steel-manned</span>
+  <h2>How this loses.</h2>
+
+  <p class="lede">A pre-mortem written from 2032, when the position has gone to ~zero. The failure modes that should give pause.</p>
+
+  <div class="split mt-4">
+    <div class="box box-bear">
+      <h3 class="bear-text">Path A — Death by TBR</h3>
+      <p class="muted mt-2">SPARC achieves Q&gt;1 in 2028 after a year's delay. Investors absorb the slip. Then in 2029–2030, ARC engineering design review reveals tritium breeding ratio of 0.95 in realistic geometry with engineering penetrations. ARC slips four years. CFS pivots to "ARC-0," a non-electricity-generating intermediate machine. Sophisticated investors mark CFS down 60–80%. Down round attempted. Strategic investor takes majority stake at distressed valuation. Original retail-adjacent secondary holders are wiped out via dilution and preference cascades.</p>
+      <p class="muted mt-3"><strong class="bear-text">Probability:</strong> 25–35%. This is the most likely failure path because TBR is the gating problem with the least demonstration data.</p>
+    </div>
+
+    <div class="box box-bear">
+      <h3 class="bear-text">Path B — Death by market</h3>
+      <p class="muted mt-2">Everything works. SPARC hits Q&gt;11. ARC delivers electrons in 2032. <strong>And then nobody really wants it</strong> at the price fusion can deliver. Solar+storage crosses $40/MWh by 2035. Enhanced geothermal scales. SMR fission delivers. Behind-the-meter power matures. The Google offtake remains in force at a strike price that's 2–3× spot, but the company can't grow plant 2 because the market won't pay the premium at scale. CFS becomes a niche supplier of firm-clean-baseload to a small number of hyperscalers and military bases. Public market values it as a slow-growth utility. The IPO clears at 2–3× current valuation, not 10×.</p>
+      <p class="muted mt-3"><strong class="bear-text">Probability:</strong> 15–25%. The technology works; the economics don't.</p>
+    </div>
+
+    <div class="box box-bear">
+      <h3 class="bear-text">Path C — Death by dilution</h3>
+      <p class="muted mt-2">Everything works at the technical level. CFS delivers ARC-1, ARC-2, and the company is on its way to becoming the next-generation General Electric. <strong>And the 2026 secondary holder still captures only a fraction of the upside</strong> because the company raised $10B+ in additional equity over five rounds, plus convertible debt, plus project finance — and the secondary holder had no follow-on rights, no anti-dilution, and sat behind multiple liquidation preferences. At a 10x company-level return, the secondary buyer sees 3x net.</p>
+      <p class="muted mt-3"><strong class="bear-text">Probability:</strong> 30–40%, conditional on company success. <em>This is the failure mode the LLM council named correctly and is harder to model than physics.</em></p>
+    </div>
+
+    <div class="box box-bear">
+      <h3 class="bear-text">Path D — Death by tritium</h3>
+      <p class="muted mt-2">CFS achieves Q&gt;1 and ARC-1 reaches construction. ARC needs ~10 kg of tritium for startup; world supply is ~25 kg and declining as CANDU reactors retire.<sup>10</sup> Romania's Cernavoda tritium facility comes online 2028 but is bottlenecked. ITER consumes its share. ARC-1 launches but ARC-2 cannot be fueled. <strong>The industry can't scale</strong> until tritium breeding is demonstrated at multi-plant level — which takes another 5+ years.</p>
+      <p class="muted mt-3"><strong class="bear-text">Probability:</strong> 10–20%. Real, but addressable through public-private partnership and policy changes already in motion at DOE.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <p>Combined estimate of "money substantially lost or compounded below 1×": <strong class="bear-text">~50–55%.</strong> Combined estimate of "money meaningfully made (3×+)": <strong class="copper">~30–40%.</strong> Tail of "moonshot returns (10×+)": <strong class="bull-text">~10–15%.</strong> Slide 13 lets you set these probabilities yourself.</p>
+</section>
+
+<!-- ─────────────────────────── Slide 12: Investment structure -->
+<section class="slide" id="s12">
+  <div class="slide-num"><span>12 / 15</span><span>VEHICLE</span></div>
+  <span class="eyebrow">What is actually being purchased</span>
+  <h2>The investment structure.</h2>
+
+  <p class="lede">We are not buying CFS shares directly. We are buying limited-partner interests in an SPV that holds CFS shares. <strong class="copper">The SPV's terms can capture more upside than the underlying loses.</strong> Read the fund docs, then re-read them.</p>
+
+  <div class="split mt-4">
+    <div>
+      <h3>The two fee structures, compared</h3>
+
+      <table class="comp mt-2">
+        <thead>
+          <tr><th>Mechanic</th><th>5% carry</th><th>20% upfront</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Capital deployed</td><td class="num-cell">$25,000</td><td class="num-cell">$20,000</td></tr>
+          <tr><td>Fee timing</td><td>At exit, on profit</td><td>At investment</td></tr>
+          <tr><td>If exit = 0×</td><td class="num-cell">Lose $25K</td><td class="num-cell">Lose $25K (but $5K never deployed)</td></tr>
+          <tr><td>If exit = 5× post-dilution</td><td class="num-cell">~$118K net</td><td class="num-cell">~$100K net</td></tr>
+          <tr><td>If exit = 10× post-dilution</td><td class="num-cell">~$237K net</td><td class="num-cell">~$200K net</td></tr>
+          <tr><td>Break-even point</td><td>Below ~1.0×, structures equivalent</td><td>Always 20% drag</td></tr>
+        </tbody>
+      </table>
+
+      <p class="muted mt-3" style="font-size: 0.9rem;"><strong class="copper">5% carry materially better in any positive outcome.</strong> 20% upfront only "wins" if the deal goes to zero — and even then both lose. There is no scenario in which 20% upfront beats 5% carry on net return. The only argument for upfront is fund-level cash flow discipline.</p>
+    </div>
+
+    <div>
+      <h3>What is still needed from the fund</h3>
+      <ul class="clean">
+        <li><strong>Share class.</strong> Series B preferred? Common via secondary? Each has different liquidation preferences, voting, info rights.</li>
+        <li><strong>Liquidation preferences senior to the SPV's position.</strong> If $1B of senior preferred sits ahead in the cap stack, the first $1B of an exit goes to those holders — not LPs.</li>
+        <li><strong>SPV management fee schedule.</strong> Many SPVs have a 2% annual management fee on top of carry. That's another ~14% drag over 7 years.</li>
+        <li><strong>Anti-dilution provisions.</strong> Almost certainly none at this entry tier.</li>
+        <li><strong>Lockup mechanics.</strong> Tied to company liquidity event? IPO + 180 days?</li>
+        <li><strong>Transfer restrictions.</strong> Can the SPV interest be exited on a secondary platform if needed?</li>
+        <li><strong>Tax treatment.</strong> Pass-through? K-1? Long-term cap gains assuming held &gt;1 year past liquidity event.</li>
+        <li><strong>Co-invest right.</strong> If a future round opens, is there any right to participate?</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="box box-copper">
+    <h3>The diligence that isn't fun but matters</h3>
+    <p>This is the part the LLM council got right and is harder to model than physics. The company succeeding does not guarantee that <em>this specific SPV interest</em> succeeds. <strong>Read the fund agreement. Compute your effective ownership at exit under stated assumptions. Then re-read the liquidation-preference waterfall.</strong> If the fund will not share these documents, the answer is no — independent of how good CFS is.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 13: Calculator -->
+<section class="slide" id="s13">
+  <div class="slide-num"><span>13 / 15</span><span>RETURN MODEL</span></div>
+  <span class="eyebrow">Adjust every input. Watch every output.</span>
+  <h2>Interactive return calculator.</h2>
+
+  <p class="muted mt-2" style="max-width: 80ch;">Defaults reflect the analysis in the prior slides: $7B implied entry valuation, $50B base-case exit valuation, 50% cumulative dilution to 2026 secondary holders, 7-year hold, 5% carry. Change anything. The expected-value table at the bottom lets you set probability across five scenarios and see your risk-weighted return.</p>
+
+  <div class="calc">
+    <!-- Input column -->
+    <div class="calc-section">
+      <div class="calc-section-title">Inputs</div>
+
+      <div class="input-row">
+        <label>Investment <span class="input-value" id="lbl-investment">$25,000</span></label>
+        <input type="range" id="investment" min="10000" max="200000" value="25000" step="1000">
+      </div>
+
+      <div class="input-row">
+        <label>Fee structure</label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-fee="carry">5% carry on profit</button>
+          <button class="toggle-btn" data-fee="upfront">20% upfront, no carry</button>
+        </div>
+      </div>
+
+      <div class="input-row" id="row-carry">
+        <label>Carry rate <span class="input-value" id="lbl-carry">5%</span></label>
+        <input type="range" id="carry" min="0" max="30" value="5" step="0.5">
+      </div>
+
+      <div class="input-row" id="row-upfront" style="display: none;">
+        <label>Upfront fee rate <span class="input-value" id="lbl-upfront">20%</span></label>
+        <input type="range" id="upfront" min="0" max="30" value="20" step="0.5">
+      </div>
+
+      <div class="input-row">
+        <label>Implied entry valuation <span class="input-value" id="lbl-entry">$7.0B</span></label>
+        <input type="range" id="entry" min="5" max="15" value="7" step="0.5">
+        <p class="faint" style="font-size: 0.7rem; margin-top: 0.25rem;">CFS B2 was undisclosed; market estimates $6–9B post-money.</p>
+      </div>
+
+      <div class="input-row">
+        <label>Exit valuation (base case) <span class="input-value" id="lbl-exit">$50B</span></label>
+        <input type="range" id="exit" min="3" max="200" value="50" step="1">
+        <p class="faint" style="font-size: 0.7rem; margin-top: 0.25rem;">For reference: NextEra Energy ~$160B; Microsoft ~$3T; SpaceX ~$350B.</p>
+      </div>
+
+      <div class="input-row">
+        <label>Cumulative dilution at exit <span class="input-value" id="lbl-dilution">50%</span></label>
+        <input type="range" id="dilution" min="0" max="80" value="50" step="1">
+        <p class="faint" style="font-size: 0.7rem; margin-top: 0.25rem;">From new equity issuance over future rounds. 40–80% is realistic.</p>
+      </div>
+
+      <div class="input-row">
+        <label>Years to liquidity event <span class="input-value" id="lbl-years">7</span></label>
+        <input type="range" id="years" min="3" max="12" value="7" step="1">
+      </div>
+    </div>
+
+    <!-- Output column -->
+    <div class="calc-section">
+      <div class="calc-section-title">Base case — single scenario</div>
+
+      <div>
+        <div class="output-big" id="out-net">$108,000</div>
+        <div class="output-label">Net proceeds (after fees & dilution)</div>
+      </div>
+
+      <div class="output-row">
+        <div class="output-block">
+          <div class="output-num" id="out-moic">4.31×</div>
+          <div class="output-block-label">MOIC (multiple on invested capital)</div>
+        </div>
+        <div class="output-block">
+          <div class="output-num" id="out-irr">23.2%</div>
+          <div class="output-block-label">IRR (annualized)</div>
+        </div>
+        <div class="output-block">
+          <div class="output-num" id="out-gross">$113,571</div>
+          <div class="output-block-label">Gross proceeds (pre-carry)</div>
+        </div>
+        <div class="output-block">
+          <div class="output-num" id="out-fees">$5,571</div>
+          <div class="output-block-label">Fees paid</div>
+        </div>
+      </div>
+
+      <hr class="rule">
+
+      <div class="calc-section-title">Probability-weighted expected value</div>
+      <p class="muted" style="font-size: 0.85rem;">Five scenarios. Edit probabilities (must sum to 100). Edit per-scenario exit valuation. Outputs use current fee, dilution, years from above.</p>
+
+      <table class="scenario-table">
+        <thead>
+          <tr><th>Scenario</th><th>Prob %</th><th>Exit ($B)</th><th>Net $</th><th>MOIC</th></tr>
+        </thead>
+        <tbody id="scenario-body">
+          <tr data-scenario="failure">
+            <td>Failure / wipeout</td>
+            <td><input type="number" min="0" max="100" value="40" data-key="prob"></td>
+            <td><input type="number" min="0" max="500" value="0" data-key="exit"></td>
+            <td class="num-cell" data-out="net">—</td>
+            <td class="num-cell" data-out="moic">—</td>
+          </tr>
+          <tr data-scenario="modest">
+            <td>Modest IPO</td>
+            <td><input type="number" min="0" max="100" value="25" data-key="prob"></td>
+            <td><input type="number" min="0" max="500" value="15" data-key="exit"></td>
+            <td class="num-cell" data-out="net">—</td>
+            <td class="num-cell" data-out="moic">—</td>
+          </tr>
+          <tr data-scenario="success">
+            <td>Successful IPO (Q&gt;1 hit)</td>
+            <td><input type="number" min="0" max="100" value="20" data-key="prob"></td>
+            <td><input type="number" min="0" max="500" value="50" data-key="exit"></td>
+            <td class="num-cell" data-out="net">—</td>
+            <td class="num-cell" data-out="moic">—</td>
+          </tr>
+          <tr data-scenario="strong">
+            <td>Strong commercial (ARC-1 live)</td>
+            <td><input type="number" min="0" max="100" value="10" data-key="prob"></td>
+            <td><input type="number" min="0" max="500" value="120" data-key="exit"></td>
+            <td class="num-cell" data-out="net">—</td>
+            <td class="num-cell" data-out="moic">—</td>
+          </tr>
+          <tr data-scenario="moonshot">
+            <td>Moonshot (next-gen GE)</td>
+            <td><input type="number" min="0" max="100" value="5" data-key="prob"></td>
+            <td><input type="number" min="0" max="500" value="300" data-key="exit"></td>
+            <td class="num-cell" data-out="net">—</td>
+            <td class="num-cell" data-out="moic">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ev-summary">
+        <div>
+          <div class="output-label">Probability-weighted EV</div>
+          <div class="ev-num" id="ev-net">$—</div>
+        </div>
+        <div>
+          <div class="output-label">EV multiple</div>
+          <div class="ev-num" id="ev-moic">—</div>
+        </div>
+        <div>
+          <div class="output-label">Σ probabilities</div>
+          <div class="ev-num" id="ev-prob">100%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 14: Decision frame -->
+<section class="slide" id="s14">
+  <div class="slide-num"><span>14 / 15</span><span>FRAMING</span></div>
+  <span class="eyebrow">The question behind the question</span>
+  <h2>What is actually being decided.</h2>
+
+  <p class="lede">The right framing is not <em>will fusion work</em>, and not <em>is CFS the best fusion company</em>. Both have been answered — probably yes, and yes — to whatever degree is possible from public information. The actual decisions are these:</p>
+
+  <hr class="rule">
+
+  <div class="split">
+    <div>
+      <span class="tag tag-copper">QUESTION 1</span>
+      <h3 class="mt-2">Is this a thesis already held?</h3>
+      <p class="muted">Investors with portfolios already structured around variants of monetary debasement and AI-driven energy demand (gold, uranium, energy infrastructure, hard assets) are looking at CFS as the most concentrated single-name expression of that thesis available in the private market. <strong class="copper">If the thesis is right, refusing CFS on risk grounds is incoherent — the thesis already absorbs risk of this character.</strong> If the thesis is wrong, $25–100K is not the binding problem.</p>
+    </div>
+
+    <div>
+      <span class="tag tag-copper">QUESTION 2</span>
+      <h3 class="mt-2">Is the SPV structure tolerable?</h3>
+      <p class="muted">A $25K position in a high-quality direct round ≠ a $25K LP interest in an SPV with carry, possible management fees, secondary-platform markup, no information rights, and uncertain liquidation preferences. <strong class="copper">The vehicle can capture more upside than the underlying loses.</strong> Until fund docs are in hand, this question cannot be answered. This is a literal gating question, not rhetorical.</p>
+    </div>
+  </div>
+
+  <div class="split mt-4">
+    <div>
+      <span class="tag tag-copper">QUESTION 3</span>
+      <h3 class="mt-2">Is this incremental risk capital?</h3>
+      <p class="muted">$25K (Investor A) is &lt;1% of plausible household NW for the use case modeled here. $25–100K (Investor B) requires an independent answer. This must be capital that, at zero, does not change either lifestyle or other financial commitments. <strong class="copper">If it would, the answer is no, regardless of how good CFS is.</strong> The 5–10 year illiquidity is the binding constraint, not the principal.</p>
+    </div>
+
+    <div>
+      <span class="tag tag-copper">QUESTION 4</span>
+      <h3 class="mt-2">Is the asymmetry real for this entry?</h3>
+      <p class="muted">A 2026 secondary buyer is not getting Series B2 economics. Per the calculator: at base-case 50% dilution to a $50B exit, gross is ~3.6×, net (5% carry) is ~3.4×. Not 50× lottery. Not 1.5× nothingburger. <strong class="copper">An honest probability-weighted expected value of ~2.8× over 7 years</strong> is plausible — that's a ~16% IRR on illiquid speculative capital. Below top-quartile private equity benchmarks. Above index funds. Defensible, not heroic.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── Slide 15: Recommendation -->
+<section class="slide" id="s15">
+  <div class="slide-num"><span>15 / 15</span><span>RECOMMENDATION</span></div>
+  <span class="eyebrow">Explicit, not coy</span>
+  <h2>Recommendation.</h2>
+
+  <p class="lede"><strong class="copper">Conditional yes for both investors, contingent on four gates.</strong> If any gate fails, the answer is no — independent of how attractive CFS is in the abstract.</p>
+
+  <div class="mt-4">
+    <div class="box box-copper mb-3">
+      <span class="tag tag-copper">GATE 1</span>
+      <h3 class="mt-2">Read the actual SPV terms.</h3>
+      <p class="muted">Carry rate. Management fee. Share class. Liquidation preferences senior to the SPV. Lockup. Information rights. If the fund will not share these documents in writing before commitment, decline. <strong>If they will, model a worst-case waterfall before signing.</strong></p>
+    </div>
+
+    <div class="box box-copper mb-3">
+      <span class="tag tag-copper">GATE 2</span>
+      <h3 class="mt-2">Verify the implied valuation at SPV entry.</h3>
+      <p class="muted">CFS B2 post-money was not publicly disclosed. Market estimates put it at $6–9B. <strong>Some pre-IPO secondary platforms quote share prices implying 1.5–2× the last primary round.</strong> If the SPV is buying at a markup over Series B2, that markup is dead-weight loss for the LP. Confirm the entry price and the implied valuation.</p>
+    </div>
+
+    <div class="box box-copper mb-3">
+      <span class="tag tag-copper">GATE 3</span>
+      <h3 class="mt-2">Confirm sizing.</h3>
+      <p class="muted">For Investor A: $25K is appropriate as a thesis expression alongside existing macro positioning. For Investor B: <strong>$25K is a dip; $100K is a different conversation.</strong> If household NW supports it without affecting other commitments, $50–75K is defensible. If $100K would require any compromise on illiquidity tolerance, take the lower bound.</p>
+    </div>
+
+    <div class="box box-copper">
+      <span class="tag tag-copper">GATE 4</span>
+      <h3 class="mt-2">Choose 5% carry over 20% upfront if both are offered.</h3>
+      <p class="muted">There is no realistic outcome distribution in which 20% upfront beats 5% carry on net return. <strong>The carry structure leaves more upside conditional on success and equivalent downside conditional on failure.</strong> The only argument for upfront is fund liquidity discipline — irrelevant to LPs.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h3>What this is not</h3>
+  <p>Not investment advice. Not a recommendation to commit capital before reading fund docs. Not certainty about CFS's commercial success — probability estimated at 35–50% by 2045. Not certainty about the secondary buyer's share of upside — estimated at 30–60% of company-level returns, depending on dilution and SPV terms.</p>
+
+  <h3 class="mt-4">What this is</h3>
+  <p>A coherent, modestly-sized expression of an existing thesis, in the most credible private-market vehicle for it, with a probability-weighted expected return that is defensible if the gates above clear. <strong class="copper">If they don't clear, walking away is also a complete answer.</strong></p>
+
+  <hr class="rule">
+
+  <div class="sources">
+    <strong>Sources & verification</strong><br>
+    <span style="display: inline-block; column-count: 2; column-gap: 3rem; margin-top: 0.5rem;">
+      <span style="display: block;">¹ MIT/CFS TFMC Program (arxiv.org/abs/2308.12301), Sept 2021.</span>
+      <span style="display: block;">² CFS Series B announcement, Dec 2021.</span>
+      <span style="display: block;">³ World Nuclear News, "Assembly starts of SPARC," Apr 2025.</span>
+      <span style="display: block;">⁴ CFS press release + Google Cloud blog, June 2025; ANS coverage Jul 2025.</span>
+      <span style="display: block;">⁵ CFS press release + TechCrunch + Latitude Media, Aug 28, 2025. Total raised ~$3B per company statement.</span>
+      <span style="display: block;">⁶ CFS DOE validation announcement, Sept 30, 2025; Energy Secretary Wright site visit.</span>
+      <span style="display: block;">⁷ Power Engineering International, "Eni signs over $1 billion PPA," Sept 2025; Data Center Frontier, Oct 2025.</span>
+      <span style="display: block;">⁸ Google DeepMind blog ("Bringing AI to next-gen fusion"), Oct 16, 2025; ANS, Oct 22, 2025; Nuclear Engineering International.</span>
+      <span style="display: block;">⁹ Wikipedia/SPARC tokamak (updated Jan 2026); Mining Stock Education on Bancel appointment, Jan 2026.</span>
+      <span style="display: block;">¹⁰ Federation of American Scientists tritium analysis, 2024; Kleinman Center (UPenn), 2025; Science magazine "fusion may run out of fuel," 2022.</span>
+      <span style="display: block;">¹¹ DOE FOA SPARC research plan documentation, Apr 2025.</span>
+      <span style="display: block;">¹² POWER Magazine interview with Bob Mumgaard, Jul 2025.</span>
+      <span style="display: block;">¹³ Fusion Industry Association 2025 report; CATF western states fusion landscape, Dec 2025.</span>
+      <span style="display: block;">¹⁴ Helion Polaris status; Wikipedia Helion Energy as of Dec 2025; TechCrunch Feb 2026.</span>
+      <span style="display: block;">¹⁵ Clean Energy Platform, "Inside TAE's 2025 Plasma Breakthrough," Jun 2025.</span>
+      <span style="display: block;">¹⁶ Tokamak Energy ST40 results, Dec 2025; Demo4 magnet results Nov 2025.</span>
+      <span style="display: block;">¹⁷ Neutron Bytes "China and US are global leaders in fusion funding," Dec 2025; FIA 2025 report.</span>
+    </span>
+  </div>
+</section>
+
+</div>
+
+<script>
+// ── Slide navigation ───────────────────────
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const liveCounter = document.getElementById('live-counter');
+const dotsContainer = document.getElementById('dots');
+
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', 'Slide ' + (i+1));
+  d.addEventListener('click', () => slides[i].scrollIntoView({behavior:'smooth'}));
+  dotsContainer.appendChild(d);
+});
+
+const dots = document.querySelectorAll('.dot');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(slides).indexOf(e.target);
+      liveCounter.textContent = String(idx + 1).padStart(2, '0');
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.4 });
+
+slides.forEach(s => observer.observe(s));
+
+// keyboard nav
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+    e.preventDefault();
+    const cur = Array.from(dots).findIndex(d => d.classList.contains('active'));
+    if (cur < total - 1) slides[cur + 1].scrollIntoView({behavior:'smooth'});
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    const cur = Array.from(dots).findIndex(d => d.classList.contains('active'));
+    if (cur > 0) slides[cur - 1].scrollIntoView({behavior:'smooth'});
+  }
+});
+
+// ── Calculator ───────────────────────
+const fmt = (n) => {
+  if (Math.abs(n) >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return '$' + (n/1e3).toFixed(1) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+};
+const fmtFull = (n) => '$' + Math.round(n).toLocaleString();
+const fmtPct = (n) => (n*100).toFixed(1) + '%';
+const fmtMOIC = (n) => n.toFixed(2) + '×';
+
+let feeStructure = 'carry';
+
+const ids = ['investment','carry','upfront','entry','exit','dilution','years'];
+const labels = {
+  investment: (v) => fmtFull(v),
+  carry: (v) => v + '%',
+  upfront: (v) => v + '%',
+  entry: (v) => '$' + Number(v).toFixed(1) + 'B',
+  exit: (v) => '$' + v + 'B',
+  dilution: (v) => v + '%',
+  years: (v) => v + (v == 1 ? ' year' : ' years'),
+};
+
+ids.forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    document.getElementById('lbl-' + id).textContent = labels[id](el.value);
+    recalc();
+  });
+});
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    feeStructure = btn.dataset.fee;
+    document.getElementById('row-carry').style.display = feeStructure === 'carry' ? '' : 'none';
+    document.getElementById('row-upfront').style.display = feeStructure === 'upfront' ? '' : 'none';
+    recalc();
+  });
+});
+
+document.querySelectorAll('.scenario-table input').forEach(inp => {
+  inp.addEventListener('input', recalc);
+});
+
+function computeReturn(investment, exitValB, entryValB, dilutionPct, years, feeStruct, carryRate, upfrontRate) {
+  // capital deployed (after upfront fee if applicable)
+  const deployed = feeStruct === 'upfront' ? investment * (1 - upfrontRate/100) : investment;
+
+  // Per-share return multiple
+  // If your shares represent ownership in entry valuation, and that valuation grows to exitVal,
+  // but new shares are issued (dilution), your effective ownership shrinks.
+  const valuationMultiple = exitValB / entryValB;
+  const dilutionFactor = 1 - (dilutionPct/100);
+  const perShareMultiple = valuationMultiple * dilutionFactor;
+
+  // gross proceeds (before carry, on capital that was actually deployed)
+  const grossProceeds = deployed * perShareMultiple;
+
+  // apply carry if applicable
+  let netProceeds, fees;
+  if (feeStruct === 'carry') {
+    const profit = grossProceeds - deployed;
+    if (profit > 0) {
+      fees = profit * (carryRate/100);
+      netProceeds = grossProceeds - fees;
+    } else {
+      fees = 0;
+      netProceeds = grossProceeds;
+    }
+  } else {
+    fees = investment * (upfrontRate/100);
+    netProceeds = grossProceeds; // no carry on upfront-fee structure
+  }
+
+  const moic = netProceeds / investment; // always vs. original investment (not deployed)
+  const irr = years > 0 ? Math.pow(Math.max(moic, 0.001), 1/years) - 1 : 0;
+
+  return { netProceeds, grossProceeds, fees, moic, irr, deployed };
+}
+
+function recalc() {
+  const investment = +document.getElementById('investment').value;
+  const carryRate = +document.getElementById('carry').value;
+  const upfrontRate = +document.getElementById('upfront').value;
+  const entry = +document.getElementById('entry').value;
+  const exit = +document.getElementById('exit').value;
+  const dilution = +document.getElementById('dilution').value;
+  const years = +document.getElementById('years').value;
+
+  // base case
+  const r = computeReturn(investment, exit, entry, dilution, years, feeStructure, carryRate, upfrontRate);
+  document.getElementById('out-net').textContent = fmtFull(r.netProceeds);
+  document.getElementById('out-moic').textContent = fmtMOIC(r.moic);
+  const moicEl = document.getElementById('out-moic');
+  moicEl.classList.toggle('green', r.moic >= 1.5);
+  moicEl.classList.toggle('red', r.moic < 1.0);
+
+  document.getElementById('out-irr').textContent = fmtPct(r.irr);
+  const irrEl = document.getElementById('out-irr');
+  irrEl.classList.toggle('green', r.irr >= 0.10);
+  irrEl.classList.toggle('red', r.irr < 0);
+
+  document.getElementById('out-gross').textContent = fmtFull(r.grossProceeds);
+  document.getElementById('out-fees').textContent = fmtFull(r.fees);
+
+  // scenarios
+  const rows = document.querySelectorAll('#scenario-body tr');
+  let weightedNet = 0;
+  let totalProb = 0;
+  rows.forEach(row => {
+    const prob = +row.querySelector('input[data-key="prob"]').value;
+    const exitVal = +row.querySelector('input[data-key="exit"]').value;
+    totalProb += prob;
+    const sr = computeReturn(investment, exitVal, entry, dilution, years, feeStructure, carryRate, upfrontRate);
+    row.querySelector('[data-out="net"]').textContent = fmtFull(sr.netProceeds);
+    row.querySelector('[data-out="moic"]').textContent = fmtMOIC(sr.moic);
+    weightedNet += sr.netProceeds * (prob / 100);
+  });
+
+  document.getElementById('ev-net').textContent = fmtFull(weightedNet);
+  document.getElementById('ev-moic').textContent = fmtMOIC(weightedNet / investment);
+  const evProb = document.getElementById('ev-prob');
+  evProb.textContent = totalProb + '%';
+  evProb.style.color = totalProb === 100 ? 'var(--copper)' : 'var(--bear)';
+}
+
+recalc();
+</script>
+
+</body>
+</html>
