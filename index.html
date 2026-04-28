@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre-IPO Investment Return Model</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #334155;
+      --accent: #60a5fa;
+      --good: #34d399;
+      --warn: #fbbf24;
+      --bad: #f87171;
+      --purple: #a78bfa;
+      --cyan: #22d3ee;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #111827 50%, #020617 100%);
+      color: var(--text);
+    }
+    header {
+      padding: 28px 32px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+    }
+    .subtitle {
+      color: var(--muted);
+      max-width: 1100px;
+      line-height: 1.45;
+    }
+    main {
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 18px;
+      padding: 18px;
+      max-width: 1700px;
+      margin: 0 auto;
+    }
+    .panel {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .controls {
+      padding: 18px;
+      align-self: start;
+      position: sticky;
+      top: 108px;
+      max-height: calc(100vh - 126px);
+      overflow: auto;
+    }
+    .results {
+      padding: 18px;
+      min-width: 0;
+    }
+    h2 {
+      font-size: 16px;
+      margin: 18px 0 12px;
+      color: #f9fafb;
+      letter-spacing: -0.01em;
+    }
+    h2:first-child { margin-top: 0; }
+    h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: #f3f4f6;
+    }
+    .control {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(51,65,85,0.65);
+    }
+    .control:last-child { border-bottom: 0; }
+    label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+    label span:last-child {
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    input[type="range"] { width: 100%; }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      color: var(--text);
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 6px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tab {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .tab.active { background: var(--accent); color: #07111f; border-color: var(--accent); }
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+    .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card {
+      background: rgba(31, 41, 55, 0.78);
+      border: 1px solid rgba(51,65,85,0.8);
+      border-radius: 16px;
+      padding: 16px;
+      min-width: 0;
+    }
+    .metric {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric.good { color: var(--good); }
+    .metric.warn { color: var(--warn); }
+    .metric.bad { color: var(--bad); }
+    .metric.purple { color: var(--purple); }
+    .metric.cyan { color: var(--cyan); }
+    .small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    canvas {
+      width: 100%;
+      height: 340px;
+      display: block;
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 12px;
+      border: 1px solid rgba(51,65,85,0.5);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    th, td {
+      border-bottom: 1px solid rgba(51,65,85,0.65);
+      padding: 10px 9px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    th:first-child, td:first-child { text-align: left; }
+    th {
+      color: #cbd5e1;
+      background: rgba(15,23,42,0.75);
+      font-weight: 600;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.7);
+      color: #cbd5e1;
+    }
+    .pill.good { color: var(--good); border-color: rgba(52,211,153,0.4); }
+    .pill.warn { color: var(--warn); border-color: rgba(251,191,36,0.4); }
+    .pill.bad { color: var(--bad); border-color: rgba(248,113,113,0.4); }
+    .note {
+      padding: 14px 16px;
+      background: rgba(96,165,250,0.08);
+      border: 1px solid rgba(96,165,250,0.35);
+      border-radius: 14px;
+      color: #dbeafe;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .warnbox {
+      padding: 14px 16px;
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.35);
+      border-radius: 14px;
+      color: #fef3c7;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .badbox {
+      padding: 14px 16px;
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.35);
+      border-radius: 14px;
+      color: #fee2e2;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 18px 0 4px;
+    }
+    .inline-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    button.reset {
+      width: 100%;
+      background: rgba(96,165,250,0.12);
+      color: #dbeafe;
+      border: 1px solid rgba(96,165,250,0.45);
+      border-radius: 12px;
+      padding: 11px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    @media (max-width: 1100px) {
+      main { grid-template-columns: 1fr; }
+      .controls { position: static; max-height: none; }
+      header { position: static; }
+      .grid.cols-4, .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Generic Pre-IPO Investment Return Model</h1>
+    <div class="subtitle">
+      A reusable calculator for private-company secondaries, SPVs, and feeder funds. It models entry valuation, exit valuation, dilution, fees, carry, annual drag, liquidation preference overhang, probability-weighted outcomes, and liquidity timing. Numbers are estimates, not tax or investment advice.
+    </div>
+  </header>
+
+  <main>
+    <aside class="panel controls">
+      <h2>Company / deal label</h2>
+      <input id="companyName" type="text" value="Example Pre-IPO Company" />
+
+      <h2>Investment size</h2>
+      <div class="control"><label>Gross check <span id="investment_v"></span></label><input id="investment" type="range" min="5000" max="250000" step="5000" value="25000"><div class="hint">Total dollars you wire before upfront fees or loads.</div></div>
+
+      <h2>Valuation assumptions</h2>
+      <div class="control"><label>Entry valuation <span id="entryVal_v"></span></label><input id="entryVal" type="range" min="1" max="250" step="1" value="8"><div class="hint">Implied fully diluted company valuation at purchase.</div></div>
+      <div class="control"><label>Base exit valuation <span id="exitVal_v"></span></label><input id="exitVal" type="range" min="0" max="500" step="1" value="50"><div class="hint">Market cap / acquisition value at liquidity.</div></div>
+      <div class="control"><label>Time to liquidity <span id="years_v"></span></label><input id="years" type="range" min="1" max="20" step="1" value="8"></div>
+      <div class="control"><label>Future dilution <span id="dilution_v"></span></label><input id="dilution" type="range" min="0" max="95" step="1" value="60"><div class="hint">Your ownership reduction from future rounds, option pools, recaps, etc.</div></div>
+
+      <h2>Fee / wrapper terms</h2>
+      <div class="control"><label>Upfront fee/load <span id="upfrontFee_v"></span></label><input id="upfrontFee" type="range" min="0" max="30" step="0.5" value="2.5"><div class="hint">Broker fee or SPV load. Some direct secondaries are low single digits; retail SPVs can be much higher.</div></div>
+      <div class="control"><label>Annual management fee <span id="mgmtFee_v"></span></label><input id="mgmtFee" type="range" min="0" max="3" step="0.1" value="0"><div class="hint">Modeled as annual NAV drag. Many direct deals have none; some funds/SPVs do.</div></div>
+      <div class="control"><label>Carry on profits <span id="carry_v"></span></label><input id="carry" type="range" min="0" max="30" step="1" value="5"><div class="hint">Profit share after return of capital. Example: 5% carry vs 20% upfront no-carry.</div></div>
+      <div class="control"><label>Hurdle / preferred return <span id="hurdle_v"></span></label><input id="hurdle" type="range" min="0" max="12" step="0.5" value="0"><div class="hint">Annual return threshold before carry. Leave at 0 if no hurdle.</div></div>
+
+      <h2>Capital stack / downside</h2>
+      <div class="control"><label>Preference overhang <span id="prefOverhang_v"></span></label><input id="prefOverhang" type="range" min="0" max="100" step="1" value="0"><div class="hint">Percent of exit value effectively absorbed before your class participates. Crude proxy for senior liquidation preferences / structure risk.</div></div>
+      <div class="control"><label>Secondary discount / premium <span id="premium_v"></span></label><input id="premium" type="range" min="-50" max="100" step="1" value="0"><div class="hint">+ means you are paying above the last credible institutional valuation; - means discount.</div></div>
+      <div class="control"><label>Tax rate on gains <span id="taxRate_v"></span></label><input id="taxRate" type="range" min="0" max="50" step="1" value="0"><div class="hint">Optional. Set to 0 for pre-tax modeling.</div></div>
+
+      <h2>Probability-weighted scenario</h2>
+      <div class="control"><label>Failure probability <span id="pFail_v"></span></label><input id="pFail" type="range" min="0" max="100" step="1" value="45"></div>
+      <div class="control"><label>Low exit probability <span id="pLow_v"></span></label><input id="pLow" type="range" min="0" max="100" step="1" value="25"></div>
+      <div class="control"><label>Base exit probability <span id="pBase_v"></span></label><input id="pBase" type="range" min="0" max="100" step="1" value="20"></div>
+      <div class="control"><label>Home-run probability <span id="pHigh_v"></span></label><input id="pHigh" type="range" min="0" max="100" step="1" value="10"><div class="hint">Probabilities are auto-normalized in the expected-value calculation.</div></div>
+      <div class="control"><label>Low exit valuation <span id="lowExit_v"></span></label><input id="lowExit" type="range" min="0" max="100" step="1" value="8"></div>
+      <div class="control"><label>Home-run exit valuation <span id="highExit_v"></span></label><input id="highExit" type="range" min="1" max="1000" step="5" value="200"></div>
+
+      <button class="reset" onclick="resetDefaults()">Reset defaults</button>
+    </aside>
+
+    <section class="panel results">
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('overview')">Overview</button>
+        <button class="tab" onclick="showTab('scenarios')">Scenarios</button>
+        <button class="tab" onclick="showTab('charts')">Charts</button>
+        <button class="tab" onclick="showTab('terms')">Deal-quality checklist</button>
+      </div>
+
+      <div id="overview" class="section active">
+        <div class="grid cols-4">
+          <div class="card"><h3>Net invested into company exposure</h3><div class="metric cyan" id="netInvested"></div><div class="small">After upfront fee/load.</div></div>
+          <div class="card"><h3>Base-case final value</h3><div class="metric" id="finalValue"></div><div class="small">After dilution, fees, carry, taxes, and preference overhang.</div></div>
+          <div class="card"><h3>Net multiple on check</h3><div class="metric" id="netMultiple"></div><div class="small">Uses gross check as denominator.</div></div>
+          <div class="card"><h3>Net IRR</h3><div class="metric" id="irr"></div><div class="small">Annualized return to liquidity.</div></div>
+        </div>
+
+        <div style="height:14px"></div>
+        <div class="grid cols-3">
+          <div class="card"><h3>Break-even exit valuation</h3><div class="metric warn" id="breakevenVal"></div><div class="small">Approximate company value needed to return your original check.</div></div>
+          <div class="card"><h3>Expected value</h3><div class="metric purple" id="expectedValue"></div><div class="small">Probability-weighted across failure, low, base, and home-run scenarios.</div></div>
+          <div class="card"><h3>Expected multiple</h3><div class="metric purple" id="expectedMultiple"></div><div class="small">Expected value divided by original check.</div></div>
+        </div>
+
+        <div style="height:14px"></div>
+        <div id="verdictBox" class="note"></div>
+
+        <div style="height:14px"></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>How the base case is calculated</h3>
+            <table>
+              <tbody id="waterfallTable"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Current company</h3>
+            <div class="metric" id="companyTitle"></div>
+            <div class="small" id="companySummary"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="scenarios" class="section">
+        <div class="card">
+          <h3>Scenario table</h3>
+          <table>
+            <thead><tr><th>Scenario</th><th>Exit valuation</th><th>Probability</th><th>Net proceeds</th><th>Multiple</th><th>IRR</th></tr></thead>
+            <tbody id="scenarioTable"></tbody>
+          </table>
+        </div>
+        <div style="height:14px"></div>
+        <div class="warnbox">
+          The most important sensitivity in private-company deals is often not the company outcome; it is the wrapper. A high upfront load, annual fee, carry, senior preference stack, or premium to last primary can turn a good company outcome into a mediocre investor outcome.
+        </div>
+      </div>
+
+      <div id="charts" class="section">
+        <div class="grid cols-2">
+          <div class="card"><h3>Exit valuation sensitivity</h3><canvas id="valuationChart" height="340"></canvas></div>
+          <div class="card"><h3>Dilution sensitivity</h3><canvas id="dilutionChart" height="340"></canvas></div>
+        </div>
+        <div style="height:14px"></div>
+        <div class="grid cols-2">
+          <div class="card"><h3>Fee comparison</h3><canvas id="feeChart" height="340"></canvas></div>
+          <div class="card"><h3>Scenario probability distribution</h3><canvas id="probChart" height="340"></canvas></div>
+        </div>
+      </div>
+
+      <div id="terms" class="section">
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Minimum information before writing a check</h3>
+            <table>
+              <tbody>
+                <tr><td>Security type</td><td><span class="pill bad">Must know</span></td></tr>
+                <tr><td>Entry valuation / price per share</td><td><span class="pill bad">Must know</span></td></tr>
+                <tr><td>Last primary round comparison</td><td><span class="pill warn">Important</span></td></tr>
+                <tr><td>Fee, carry, annual fee</td><td><span class="pill bad">Must know</span></td></tr>
+                <tr><td>Transfer approval / ROFR</td><td><span class="pill warn">Important</span></td></tr>
+                <tr><td>Liquidation preference senior to you</td><td><span class="pill bad">Must know</span></td></tr>
+                <tr><td>Information rights</td><td><span class="pill warn">Usually weak</span></td></tr>
+                <tr><td>Tax reporting / K-1 timing</td><td><span class="pill warn">Practical issue</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Interpretation guide</h3>
+            <div id="checklistInterpretation" class="small" style="font-size:14px;color:#d1d5db;line-height:1.55"></div>
+          </div>
+        </div>
+        <div style="height:14px"></div>
+        <div class="badbox">
+          This tool cannot tell you whether the underlying company is good. It tells you how much company success you need to overcome valuation, dilution, fee drag, and capital-stack risk.
+        </div>
+      </div>
+
+      <div class="footer">
+        Model simplifications: annual management fee is approximated as NAV drag; carry is calculated on gains above returned capital plus optional hurdle; preference overhang is a crude haircut to exit value before your class participates; taxes are simplified. Real SPV/fund docs can differ materially.
+      </div>
+    </section>
+  </main>
+
+<script>
+const ids = ["investment","entryVal","exitVal","years","dilution","upfrontFee","mgmtFee","carry","hurdle","prefOverhang","premium","taxRate","pFail","pLow","pBase","pHigh","lowExit","highExit"];
+const defaults = {
+  investment:25000, entryVal:8, exitVal:50, years:8, dilution:60,
+  upfrontFee:2.5, mgmtFee:0, carry:5, hurdle:0, prefOverhang:0, premium:0, taxRate:0,
+  pFail:45, pLow:25, pBase:20, pHigh:10, lowExit:8, highExit:200
+};
+
+function fmtMoney(x){
+  if (!isFinite(x)) return "—";
+  const abs = Math.abs(x);
+  if (abs >= 1e9) return "$" + (x/1e9).toFixed(1) + "B";
+  if (abs >= 1e6) return "$" + (x/1e6).toFixed(1) + "M";
+  return "$" + Math.round(x).toLocaleString();
+}
+function fmtValB(x){ return "$" + Number(x).toFixed(x >= 100 ? 0 : 1) + "B"; }
+function fmtPct(x){ return Number(x).toFixed(x % 1 === 0 ? 0 : 1) + "%"; }
+function fmtMult(x){ return isFinite(x) ? x.toFixed(2) + "x" : "—"; }
+
+function getVals(){
+  const v = {};
+  ids.forEach(id => v[id] = parseFloat(document.getElementById(id).value));
+  v.companyName = document.getElementById("companyName").value || "Example Pre-IPO Company";
+  return v;
+}
+
+function calc(v, exitValB){
+  const gross = v.investment;
+  const netInvested = gross * (1 - v.upfrontFee/100);
+  const effectiveEntryB = v.entryVal * (1 + v.premium/100);
+  const postPrefExitB = Math.max(0, exitValB * (1 - v.prefOverhang/100));
+  const grossBeforeMgmt = effectiveEntryB > 0 ? netInvested * (postPrefExitB / effectiveEntryB) * (1 - v.dilution/100) : 0;
+  const afterMgmt = grossBeforeMgmt * Math.pow(1 - v.mgmtFee/100, v.years);
+  const hurdleValue = netInvested * Math.pow(1 + v.hurdle/100, v.years);
+  const carryBase = Math.max(0, afterMgmt - hurdleValue);
+  const carryPaid = carryBase * v.carry/100;
+  const afterCarry = afterMgmt - carryPaid;
+  const taxableGain = Math.max(0, afterCarry - gross);
+  const taxPaid = taxableGain * v.taxRate/100;
+  const finalValue = afterCarry - taxPaid;
+  const multiple = gross > 0 ? finalValue / gross : 0;
+  const irr = finalValue > 0 && gross > 0 ? Math.pow(finalValue/gross, 1/v.years)-1 : -1;
+  return {gross, netInvested, effectiveEntryB, postPrefExitB, grossBeforeMgmt, afterMgmt, carryPaid, taxPaid, finalValue, multiple, irr};
+}
+
+function scenarioProbs(v){
+  const raw = [v.pFail, v.pLow, v.pBase, v.pHigh];
+  const sum = raw.reduce((a,b)=>a+b,0) || 1;
+  return raw.map(x=>x/sum);
+}
+
+function updateLabels(v){
+  const labels = {
+    investment: fmtMoney(v.investment), entryVal: fmtValB(v.entryVal), exitVal: fmtValB(v.exitVal),
+    years: v.years + " yrs", dilution: fmtPct(v.dilution), upfrontFee: fmtPct(v.upfrontFee),
+    mgmtFee: fmtPct(v.mgmtFee), carry: fmtPct(v.carry), hurdle: fmtPct(v.hurdle),
+    prefOverhang: fmtPct(v.prefOverhang), premium: (v.premium>=0?"+":"") + fmtPct(v.premium),
+    taxRate: fmtPct(v.taxRate), pFail: fmtPct(v.pFail), pLow: fmtPct(v.pLow),
+    pBase: fmtPct(v.pBase), pHigh: fmtPct(v.pHigh), lowExit: fmtValB(v.lowExit), highExit: fmtValB(v.highExit)
+  };
+  Object.keys(labels).forEach(k => document.getElementById(k+"_v").textContent = labels[k]);
+}
+
+function colorMetric(el, val, type){
+  el.classList.remove("good","warn","bad");
+  if (type === "irr"){
+    if (val >= 0.20) el.classList.add("good");
+    else if (val >= 0.08) el.classList.add("warn");
+    else el.classList.add("bad");
+  } else {
+    if (val >= 3) el.classList.add("good");
+    else if (val >= 1.2) el.classList.add("warn");
+    else el.classList.add("bad");
+  }
+}
+
+function findBreakeven(v){
+  let lo = 0, hi = 2000;
+  for(let i=0;i<80;i++){
+    const mid = (lo+hi)/2;
+    if(calc(v, mid).finalValue >= v.investment) hi = mid; else lo = mid;
+  }
+  return hi;
+}
+
+function drawLineChart(canvasId, xs, ys, xLabel, yLabel, markerX=null){
+  const c = document.getElementById(canvasId);
+  const ctx = c.getContext("2d");
+  const rect = c.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  c.width = rect.width*dpr; c.height = rect.height*dpr; ctx.scale(dpr,dpr);
+  const w=rect.width, h=rect.height, pad=46;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle = "rgba(148,163,184,0.35)"; ctx.lineWidth=1;
+  ctx.fillStyle = "#9ca3af"; ctx.font="12px system-ui";
+  const xmin=Math.min(...xs), xmax=Math.max(...xs);
+  const ymin=Math.min(0, ...ys), ymax=Math.max(...ys, 1);
+  function X(x){return pad+(x-xmin)/(xmax-xmin)*(w-pad*1.4);}
+  function Y(y){return h-pad-(y-ymin)/(ymax-ymin)*(h-pad*1.5);}
+  for(let i=0;i<5;i++){
+    const y = ymin + (ymax-ymin)*i/4;
+    ctx.beginPath(); ctx.moveTo(pad, Y(y)); ctx.lineTo(w-pad*0.4, Y(y)); ctx.stroke();
+    ctx.fillText(y.toFixed(1)+"x", 8, Y(y)+4);
+  }
+  ctx.strokeStyle="#60a5fa"; ctx.lineWidth=3; ctx.beginPath();
+  xs.forEach((x,i)=>{ const px=X(x), py=Y(ys[i]); if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); });
+  ctx.stroke();
+  ctx.strokeStyle="rgba(248,113,113,0.7)"; ctx.lineWidth=1.5; ctx.setLineDash([5,5]);
+  ctx.beginPath(); ctx.moveTo(pad,Y(1)); ctx.lineTo(w-pad*0.4,Y(1)); ctx.stroke(); ctx.setLineDash([]);
+  if(markerX !== null){
+    ctx.strokeStyle="rgba(251,191,36,0.85)"; ctx.beginPath(); ctx.moveTo(X(markerX),pad*0.4); ctx.lineTo(X(markerX),h-pad); ctx.stroke();
+  }
+  ctx.fillStyle="#cbd5e1"; ctx.fillText(xLabel, w/2-40, h-10);
+  ctx.save(); ctx.translate(14,h/2+45); ctx.rotate(-Math.PI/2); ctx.fillText(yLabel,0,0); ctx.restore();
+}
+
+function drawBarChart(canvasId, labels, values){
+  const c = document.getElementById(canvasId);
+  const ctx = c.getContext("2d");
+  const rect = c.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  c.width = rect.width*dpr; c.height = rect.height*dpr; ctx.scale(dpr,dpr);
+  const w=rect.width, h=rect.height, pad=46;
+  ctx.clearRect(0,0,w,h);
+  const maxV = Math.max(...values, 1);
+  const barW = (w-pad*1.6)/values.length*0.65;
+  ctx.font="12px system-ui";
+  values.forEach((val,i)=>{
+    const x = pad + i*((w-pad*1.6)/values.length) + barW*0.25;
+    const bh = val/maxV*(h-pad*1.6);
+    const y = h-pad-bh;
+    ctx.fillStyle = ["#60a5fa","#a78bfa","#22d3ee","#34d399","#fbbf24"][i%5];
+    ctx.fillRect(x,y,barW,bh);
+    ctx.fillStyle="#cbd5e1"; ctx.textAlign="center";
+    ctx.fillText(labels[i], x+barW/2, h-16);
+    ctx.fillText(typeof val === "number" ? val.toFixed(2)+"x" : val, x+barW/2, y-8);
+  });
+  ctx.textAlign="left";
+}
+
+function update(){
+  const v = getVals();
+  updateLabels(v);
+  const base = calc(v, v.exitVal);
+  const probs = scenarioProbs(v);
+  const scenarios = [
+    ["Failure", 0, probs[0]],
+    ["Low", v.lowExit, probs[1]],
+    ["Base", v.exitVal, probs[2]],
+    ["Home-run", v.highExit, probs[3]]
+  ].map(s => ({name:s[0], exit:s[1], prob:s[2], result:calc(v,s[1])}));
+  const expected = scenarios.reduce((a,s)=>a+s.prob*s.result.finalValue,0);
+  const expectedMult = expected/v.investment;
+  document.getElementById("netInvested").textContent = fmtMoney(base.netInvested);
+  document.getElementById("finalValue").textContent = fmtMoney(base.finalValue);
+  document.getElementById("netMultiple").textContent = fmtMult(base.multiple);
+  document.getElementById("irr").textContent = (base.irr*100).toFixed(1)+"%";
+  document.getElementById("breakevenVal").textContent = fmtValB(findBreakeven(v));
+  document.getElementById("expectedValue").textContent = fmtMoney(expected);
+  document.getElementById("expectedMultiple").textContent = fmtMult(expectedMult);
+  colorMetric(document.getElementById("finalValue"), base.multiple, "multiple");
+  colorMetric(document.getElementById("netMultiple"), base.multiple, "multiple");
+  colorMetric(document.getElementById("irr"), base.irr, "irr");
+  colorMetric(document.getElementById("expectedMultiple"), expectedMult, "multiple");
+
+  const verdict = document.getElementById("verdictBox");
+  let text = "";
+  let cls = "note";
+  if (base.multiple < 1) { text = "Base case does not return capital. The deal needs either a much higher exit valuation, lower fees, less dilution, or a lower entry valuation."; cls="badbox"; }
+  else if (base.irr < 0.08) { text = "Base case returns capital but does not obviously compensate for illiquidity and private-market risk."; cls="warnbox"; }
+  else if (base.irr < 0.20) { text = "Base case is plausible but not spectacular. Check whether the same risk could be diversified across multiple private companies instead."; cls="note"; }
+  else { text = "Base case is attractive on paper. Stress-test dilution, fee drag, liquidity timing, and downside scenarios before treating it as investable."; cls="note"; }
+  verdict.className = cls;
+  verdict.textContent = text;
+
+  document.getElementById("companyTitle").textContent = v.companyName;
+  document.getElementById("companySummary").innerHTML =
+    `Entry: <b>${fmtValB(v.entryVal)}</b>; effective entry after secondary premium/discount: <b>${fmtValB(base.effectiveEntryB)}</b>. Base exit: <b>${fmtValB(v.exitVal)}</b>. Future dilution: <b>${fmtPct(v.dilution)}</b>.`;
+
+  const rows = [
+    ["Gross check", fmtMoney(base.gross)],
+    ["Upfront fee/load", "-" + fmtMoney(base.gross-base.netInvested)],
+    ["Net exposure", fmtMoney(base.netInvested)],
+    ["Effective entry valuation", fmtValB(base.effectiveEntryB)],
+    ["Exit value after preference overhang", fmtValB(base.postPrefExitB)],
+    ["Value before annual fee drag", fmtMoney(base.grossBeforeMgmt)],
+    ["Value after annual fee drag", fmtMoney(base.afterMgmt)],
+    ["Carry paid", "-" + fmtMoney(base.carryPaid)],
+    ["Taxes paid", "-" + fmtMoney(base.taxPaid)],
+    ["Final net value", fmtMoney(base.finalValue)]
+  ];
+  document.getElementById("waterfallTable").innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+
+  document.getElementById("scenarioTable").innerHTML = scenarios.map(s =>
+    `<tr><td>${s.name}</td><td>${fmtValB(s.exit)}</td><td>${fmtPct(s.prob*100)}</td><td>${fmtMoney(s.result.finalValue)}</td><td>${fmtMult(s.result.multiple)}</td><td>${(s.result.irr*100).toFixed(1)}%</td></tr>`
+  ).join("");
+
+  document.getElementById("checklistInterpretation").innerHTML =
+    `A clean deal is not just “access to a hot company.” It should explain what you own, at what valuation, what sits senior to you, how fees are charged, whether the company must approve transfer, and how liquidity can occur. Current settings imply a <b>${fmtPct(v.upfrontFee)}</b> upfront load, <b>${fmtPct(v.mgmtFee)}</b> annual fee, <b>${fmtPct(v.carry)}</b> carry, and <b>${fmtPct(v.prefOverhang)}</b> preference overhang.`;
+
+  const xsVal = [], ysVal = [];
+  for(let x=0; x<=Math.max(200, v.highExit); x += Math.max(2, Math.max(200,v.highExit)/80)){
+    xsVal.push(x); ysVal.push(calc(v,x).multiple);
+  }
+  drawLineChart("valuationChart", xsVal, ysVal, "Exit valuation ($B)", "Net multiple", v.exitVal);
+
+  const xsDil=[], ysDil=[];
+  for(let d=0; d<=95; d+=2){
+    const vv = {...v, dilution:d};
+    xsDil.push(d); ysDil.push(calc(vv,v.exitVal).multiple);
+  }
+  drawLineChart("dilutionChart", xsDil, ysDil, "Dilution (%)", "Net multiple", v.dilution);
+
+  const feeCases = [
+    ["No fee", {...v, upfrontFee:0, carry:0, mgmtFee:0}],
+    ["2.5% fee", {...v, upfrontFee:2.5, carry:0, mgmtFee:0}],
+    ["5% carry", {...v, upfrontFee:0, carry:5, mgmtFee:0}],
+    ["20% load", {...v, upfrontFee:20, carry:0, mgmtFee:0}],
+    ["2/20", {...v, upfrontFee:0, mgmtFee:2, carry:20}]
+  ];
+  drawBarChart("feeChart", feeCases.map(x=>x[0]), feeCases.map(x=>calc(x[1],v.exitVal).multiple));
+
+  drawBarChart("probChart", scenarios.map(s=>s.name), scenarios.map(s=>s.prob*100/100));
+}
+
+function showTab(id){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  event.target.classList.add("active");
+  document.getElementById(id).classList.add("active");
+  setTimeout(update,50);
+}
+
+function resetDefaults(){
+  Object.entries(defaults).forEach(([k,val]) => document.getElementById(k).value = val);
+  document.getElementById("companyName").value = "Example Pre-IPO Company";
+  update();
+}
+
+ids.forEach(id => document.getElementById(id).addEventListener("input", update));
+document.getElementById("companyName").addEventListener("input", update);
+window.addEventListener("resize", update);
+update();
+</script>
+</body>
+</html>
